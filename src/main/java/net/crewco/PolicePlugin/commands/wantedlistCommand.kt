@@ -30,18 +30,17 @@ class wantedlistCommand @Inject constructor(private val plugin:Startup) {
 				if (player.hasPermission("prison.wl.add")) {
 					if (args.size > 3 + plugin.config.getInt("settings.word-limit") || Arrays
 							.stream(utilsManager.subArray(args, 3, args.size - 1))
-							.reduce("") { now, old -> "$now $old" }
-							.strip().length > plugin.config.getInt("settings.character-limit")
+							.reduce("") { now, old -> "$now $old" }.length > plugin.config.getInt("settings.character-limit")
 					) {
-						player.sendMessage(messagesManager.messages.get("args-length")!!)
+						player.sendMessage(messagesManager.messages["args-length"]!!)
 						return
 					}
 					if (Bukkit.getPlayer(args[1]) == null) {
-						player.sendMessage(messagesManager.messages.get("invalid-command")!!)
+						player.sendMessage(messagesManager.messages["invalid-command"]!!)
 						return
 					}
 					if (!NumberUtils.isDigits(args[2])) {
-						player.sendMessage(messagesManager.messages.get("invalid-command")!!)
+						player.sendMessage(messagesManager.messages["invalid-command"]!!)
 						return
 					}
 					if (wantedListManager.getPlayers().containsKey(Bukkit.getPlayer(args[1])!!.uniqueId)) {
@@ -51,7 +50,7 @@ class wantedlistCommand @Inject constructor(private val plugin:Startup) {
 					wantedListManager.addPlayer(
 						Bukkit.getPlayer(args[1])!!.uniqueId, player.uniqueId,
 						NumberUtils.toInt(args[2]), Arrays.stream(utilsManager.subArray(args, 3, args.size - 1))
-							.reduce("") { now, old -> "$now $old" }.strip()
+							.reduce("") { now, old -> "$now $old" }
 					)
 					player.sendMessage(messagesManager.messages["wanted-add"]!!)
 				} else {
@@ -63,7 +62,7 @@ class wantedlistCommand @Inject constructor(private val plugin:Startup) {
 					if (args.size > 3 + plugin.config.getInt("settings.word-limit") || Arrays
 							.stream(utilsManager.subArray(args, 3, args.size - 1))
 							.reduce("") { now, old -> "$now $old" }
-							.strip().length > plugin.getConfig().getInt("settings.character-limit")
+							.length > plugin.getConfig().getInt("settings.character-limit")
 					) {
 						player.sendMessage(messagesManager.messages.get("args-length")!!)
 						return
@@ -83,7 +82,7 @@ class wantedlistCommand @Inject constructor(private val plugin:Startup) {
 					wantedListManager.updatePlayer(
 						Bukkit.getPlayer(args[1])!!.uniqueId, player.uniqueId,
 						NumberUtils.toInt(args[2]), Arrays.stream(utilsManager.subArray(args, 3, args.size - 1))
-							.reduce("") { now, old -> "$now $old" }.strip()
+							.reduce("") { now, old -> "$now $old" }
 					)
 					player.sendMessage(messagesManager.messages.get("wanted-update")!!)
 				} else {

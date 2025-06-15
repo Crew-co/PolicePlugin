@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
 class HandCuff @Inject constructor(private val plugin:Startup) {
-	var cuffed: MutableMap<Player, Player> = HashMap()
+	private var cuffed: MutableMap<Player, Player> = HashMap()
 
 	fun getHandcuff(): ItemStack? {
 		if (plugin.config.isSet("handcuff")) {

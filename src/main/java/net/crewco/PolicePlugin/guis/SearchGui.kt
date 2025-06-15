@@ -2,8 +2,8 @@ package net.crewco.PolicePlugin.guis
 
 import net.crewco.PolicePlugin.Startup
 import net.crewco.PolicePlugin.Startup.Companion.utilsManager
+import net.crewco.PolicePlugin.guis.libs.NoobPage
 import net.crewco.PolicePlugin.guis.listener.Gui
-import net.crewco.PolicePlugin.guis.listener.Gui.NoobPage
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -22,7 +22,7 @@ class SearchGui @Inject constructor(private val plugin:Startup) {
 		taken.add(utilsManager.color("&7&lTaken:"))
 		val added: MutableList<String> = ArrayList()
 		added.add(utilsManager.color("&7&lAdded:"))
-		val gui: Gui = Gui()
+		val gui =Gui(plugin)
 		val page: NoobPage = gui.create(target.name, 36)
 		val items = listOf(*target.inventory.storageContents)
 		page.setContents(target.inventory.storageContents)

@@ -73,9 +73,9 @@ class JailListener @Inject constructor(private val plugin:Startup) : Listener {
 			}
 		}
 		if (wantedListManager.getPlayers().containsKey(e.player.uniqueId)){
-			if (wantedListManager.getConfig()!!.isSet("logout-timer") && wantedListManager.getConfig()!!.isSet("logout-active")
-				&& wantedListManager.getConfig()!!.getBoolean("logout-active")){
-				if (System.currentTimeMillis() - e.player.lastPlayed > 60000L * wantedListManager.getConfig()!!.getInt("logout-timer")){
+			if (wantedListManager.getcfg()!!.isSet("logout-timer") && wantedListManager.getcfg()!!.isSet("logout-active")
+				&& wantedListManager.getcfg()!!.getBoolean("logout-active")){
+				if (System.currentTimeMillis() - e.player.lastPlayed > 60000L * wantedListManager.getcfg()!!.getInt("logout-timer")){
 					wantedListManager.removePlayer(e.player.uniqueId)
 				}
 			}

@@ -18,12 +18,12 @@ import java.util.*
 
 class WantedList @Inject constructor(private val plugin:Startup){
 	private var file: File? = null
-	private var config: FileConfiguration? = null
+	lateinit var config: FileConfiguration
 	private val players: MutableMap<UUID, WantedPlayer> = HashMap()
 	private val update: MutableMap<UUID, WantedPlayer> = HashMap()
 	private var template: List<String>? = null
 
-	fun getConfig(): FileConfiguration? {
+	fun getcfg(): FileConfiguration {
 		return config
 	}
 

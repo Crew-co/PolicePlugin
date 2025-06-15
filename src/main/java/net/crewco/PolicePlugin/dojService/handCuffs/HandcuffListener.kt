@@ -41,7 +41,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 
 	init {
 		Bukkit.getScheduler().runTaskTimer(plugin, Runnable {
-			for ((cuffer, cuffed) in handCuffManager.cuffed.entries) {
+			for ((cuffer, cuffed) in handCuffManager.getCuffed().entries) {
 				val to = cuffed.location.clone().add(
 					cuffed.location.direction.x * 2,
 					0.0,
@@ -83,7 +83,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	fun onDamage(e: EntityDamageEvent) {
 		if (e.entity is Player
-			&& (handCuffManager.cuffed.containsKey(e.entity) || handCuffManager.cuffed.containsValue(e.entity))
+			&& (handCuffManager.getCuffed().containsKey(e.entity) || handCuffManager.getCuffed().containsValue(e.entity))
 		) {
 			e.isCancelled = true
 		}
@@ -91,7 +91,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	fun onInteract(e: PlayerInteractEvent) {
-		if (handCuffManager.cuffed.containsKey(e.player)) {
+		if (handCuffManager.getCuffed().containsKey(e.player)) {
 			e.isCancelled = true
 		}
 		if (handCuffManager.holdingCuff(e.player)) e.isCancelled = true
@@ -99,7 +99,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	fun onLeave(e: PlayerQuitEvent) {
-		if (handCuffManager.cuffed.containsKey(e.player)) {
+		if (handCuffManager.getCuffed().containsKey(e.player)) {
 			if (jailManager.getPrisons().isEmpty()) return
 			val lore: MutableList<String> = ArrayList()
 			lore.add(utilsManager.color("&7&lOfficer: &f" + handCuffManager.getCuffer(e.player)!!.name))
@@ -121,10 +121,10 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 			handCuffManager.getCuffer(e.player)!!.inventory.addItem(slip)
 			handCuffManager.uncuffPlayer(e.player)
 			jailManager.imprisonPlayer(e.player, jailManager.getPrisons()[0], total)
-		} else if (handCuffManager.cuffed.containsValue(e.player)) {
+		} else if (handCuffManager.getCuffed().containsValue(e.player)) {
 			handCuffManager.uncuffPlayer(handCuffManager.getCuffed(e.player)!!)
 		} else if (wantedListManager.getPlayers().containsKey(e.player.uniqueId)) {
-			if (wantedListManager.getConfig()!!.isSet("logout-timer") && wantedListManager.getConfig()!!.isSet("logout-active") && wantedListManager.getConfig()!!.getBoolean("logout-active")){
+			if (wantedListManager.getcfg()!!.isSet("logout-timer") && wantedListManager.getcfg()!!.isSet("logout-active") && wantedListManager.getcfg()!!.getBoolean("logout-active")){
 				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
 					if (e.player.isOnline) return@Runnable
 					wantedListManager.removePlayer(e.player.uniqueId)
@@ -135,7 +135,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	fun onCommand(e: PlayerCommandPreprocessEvent) {
-		if (handCuffManager.cuffed.containsKey(e.player)
+		if (handCuffManager.getCuffed().containsKey(e.player)
 			&& !whitelistManager.contains(
 				e.message.lowercase(Locale.getDefault()).split(" ".toRegex()).dropLastWhile { it.isEmpty() }
 					.toTypedArray()[0].substring(1))
@@ -145,7 +145,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	fun onCommand(e: InventoryClickEvent) {
-		if (handCuffManager.cuffed.containsKey(e.whoClicked)) {
+		if (handCuffManager.getCuffed().containsKey(e.whoClicked)) {
 			e.isCancelled = true
 			e.whoClicked.closeInventory()
 		}
@@ -153,7 +153,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	fun onCommand(e: PlayerDropItemEvent) {
-		if (handCuffManager.cuffed.containsKey(e.player)) e.isCancelled = true
+		if (handCuffManager.getCuffed().containsKey(e.player)) e.isCancelled = true
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -169,7 +169,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 			jailManager.prisonerToCell(e.rightClicked as Player)
 			return
 		}
-		if (handCuffManager.cuffed.containsValue(e.player) && handCuffManager.cuffed.containsKey(e.rightClicked as Player)) {
+		if (handCuffManager.getCuffed().containsValue(e.player) && handCuffManager.getCuffed().containsKey(e.rightClicked as Player)) {
 			if (jailManager.inDropOff(e.player)) {
 				if (!e.player.hasPermission("prison.arrest")) {
 					e.player.sendMessage((messagesManager.messages["invalid-permission"] as String))

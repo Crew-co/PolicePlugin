@@ -20,6 +20,8 @@ import net.crewco.PolicePlugin.guis.docguis.PrisionGui
 import net.crewco.PolicePlugin.guis.listener.Gui
 import net.crewco.common.CrewCoPlugin
 import net.jpountz.util.Utils
+import nl.sbdeveloper.vehiclesplus.api.VehiclesPlusAPI
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import java.util.*
 import kotlin.properties.Delegates
@@ -99,6 +101,10 @@ fun load() {
 		maxtime = config.getInt("settings.logoff-time")
 		cufftimer = config.getInt("settings.cuff-timer")
 		whitelistManager = config.getStringList("settings.prison-whitelist")
+	}
+
+	fun getPluing():Startup{
+		return this
 	}
 
 }

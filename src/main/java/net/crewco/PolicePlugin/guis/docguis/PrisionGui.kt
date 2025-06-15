@@ -9,6 +9,7 @@ import net.crewco.PolicePlugin.Startup.Companion.utilsManager
 import net.crewco.PolicePlugin.Startup.Companion.wantedListManager
 import net.crewco.PolicePlugin.Util.Pair
 import net.crewco.PolicePlugin.Util.XMaterial
+import net.crewco.PolicePlugin.guis.libs.NoobPage
 import net.crewco.PolicePlugin.guis.listener.Gui
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Material
@@ -91,8 +92,8 @@ class PrisionGui @Inject constructor(private val plugin:Startup){
 		lore.add(utilsManager.color("&7&lArrested: &f" + target.name))
 		lore.add(utilsManager.color("&7&lDate: &f" + (Date()).toString()))
 		lore.add(utilsManager.color("&7&lCharges:"))
-		val gui = Gui()
-		val page: Gui.NoobPage = gui.create(title!!, size)
+		val gui = Gui(plugin)
+		val page: NoobPage = gui.create(title!!, size)
 		page.fill(fill)
 		for ((key, value) in inventory.entries) {
 			page.setItem(key.key, key.value, value)
@@ -142,7 +143,7 @@ class PrisionGui @Inject constructor(private val plugin:Startup){
 						target.uniqueId
 					)
 					jailManager.imprisonPlayer(target, prison!!, total[0])
-					handCuffManager.cuffed.remove(target)
+					handCuffManager.getCuffed().remove(target)
 					lore.add(
 						utilsManager.color(
 							"&7&lTime: &f"

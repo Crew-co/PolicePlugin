@@ -73,6 +73,11 @@ repositories {
 		name = "sponge"
 		url = uri("https://repo.spongepowered.org/repository/maven-public/")
 	}
+
+	maven {
+		name = "cars"
+		url = uri("https://repo.sbdevelopment.tech/releases")
+	}
 }
 
 dependencies {
@@ -85,6 +90,9 @@ dependencies {
 
 	// World Guard
 	compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
+
+	// Vehicles Plus
+	implementation("nl.sbdeveloper:VehiclesPlus-API:3.0.6")
 
 	//LuckPerms
 	compileOnly("net.luckperms:api:5.4")
@@ -176,4 +184,5 @@ bukkit {
 	authors = listOf("CrewCo Team", *project_owners.split(",").toTypedArray())
 	main = "$project_package.$project_plugin_class"
 	apiVersion = "1.21"
+	depend = mutableListOf("WorldGuard","vehiclesplus")
 }
