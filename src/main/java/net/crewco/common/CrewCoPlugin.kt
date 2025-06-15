@@ -24,12 +24,10 @@ import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import net.kyori.adventure.text.Component.text
 import org.incendo.cloud.annotations.AnnotationParser
 import org.incendo.cloud.annotations.BuilderDecorator
-import org.incendo.cloud.annotations.CommandDescription
 import org.incendo.cloud.description.CommandDescription.commandDescription
 import org.incendo.cloud.kotlin.coroutines.annotations.installCoroutineSupport
 import org.incendo.cloud.meta.CommandMeta
 import org.incendo.cloud.minecraft.extras.caption.ComponentCaptionFormatter
-import org.incendo.cloud.parser.StandardParameters
 
 
 //TODO: Move this to a separate project once we have an actual server and a maven repo

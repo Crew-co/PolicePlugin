@@ -1,0 +1,11 @@
+prisons:
+  TheSlammer:
+    region: 'theslammer'
+    world: 'world'
+    max-time: 20
+    drop-off: 'slammerdropoff'
+    release: 'slammerrelease'
+    cells:
+    -  'slammer1'
+    -  'slammer2'
+    -  'slammer3'

@@ -3,8 +3,8 @@ plugins {
 	id("org.jetbrains.kotlin.jvm") version "2.0.21"
 	id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 	id("com.github.johnrengelman.shadow") version "7.1.2"
-	id("io.papermc.paperweight.userdev") version "1.7.4"
-	id("xyz.jpenilla.run-paper") version "2.0.0"
+	id("io.papermc.paperweight.userdev") version "1.7.7"
+	id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
 val paper_version: String by project
@@ -25,6 +25,11 @@ repositories {
 	maven {
 		name = "papermc-repo"
 		url = uri("https://repo.papermc.io/repository/maven-public/")
+	}
+
+	maven {
+		name = "WorldGuard"
+		url = uri("https://maven.enginehub.org/repo/")
 	}
 
 	maven {
@@ -75,6 +80,11 @@ dependencies {
 	paperweight.paperDevBundle(paper_version)
 	compileOnly("io.papermc.paper:paper-api:$paper_version")
 
+	// Inventory FrameWork
+	implementation("com.github.stefvanschie.inventoryframework:IF:0.10.19")
+
+	// World Guard
+	compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
 
 	//LuckPerms
 	compileOnly("net.luckperms:api:5.4")
@@ -120,8 +130,8 @@ dependencies {
 	implementation("net.kyori:adventure-extra-kotlin:4.12.0")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_22
-java.targetCompatibility = JavaVersion.VERSION_22
+java.sourceCompatibility = JavaVersion.VERSION_21
+java.targetCompatibility = JavaVersion.VERSION_21
 
 tasks {
 	assemble {
@@ -141,7 +151,7 @@ tasks {
 
 	compileKotlin {
 		kotlinOptions {
-			jvmTarget = "22"
+			jvmTarget = "21"
 		}
 	}
 
@@ -165,5 +175,5 @@ bukkit {
 	version = project_version
 	authors = listOf("CrewCo Team", *project_owners.split(",").toTypedArray())
 	main = "$project_package.$project_plugin_class"
-	apiVersion = "1.20"
+	apiVersion = "1.21"
 }

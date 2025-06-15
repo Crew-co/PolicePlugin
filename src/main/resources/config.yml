@@ -1,0 +1,99 @@
+handcuff:
+  material: diamond_hoe
+  name: '&fHandcuffs'
+  modelData: 3005
+  lore:
+  -  ''
+  -  '&7Hold right-click to handcuff'
+  glow: true
+head:
+-  '&e%player%'
+-  '&cPriority Level: &4&l%priority%'
+-  '&8Reason: %reason%'
+-  '&7Charged by: %who%'
+settings:
+  word-limit: 6
+  character-limit: 40
+  cuff-timer: 5
+  logoff-time: 20
+  prison-whitelist:
+  -  help
+gui:
+  title: '&cCharges Menu'
+  size: 27
+  items:
+    '1-0':
+      time: '20m'
+      material: 'DIAMOND_SWORD'
+      name: '&cMurder Charge'
+      lore:
+      -  ' '
+      -  '&bTime: &720m'
+    '1-1':
+      time: '30s'
+      material: 'DIAMOND'
+      name: '&cTheft'
+      lore:
+      -  ' '
+      -  '&bTime: &730s'
+    '1-2':
+      time: '10m'
+      material: 'FLINT'
+      name: '&cAgrivated Assault'
+      lore:
+      -  ' '
+      -  '&bTime: &710m'
+    '1-3':
+      time: '15m'
+      material: 'BLAZE_POWDER'
+      name: '&cArson'
+      lore:
+      -  ' '
+      -  '&bTime: &715m'
+    '1-4':
+      time: '5m'
+      material: 'GOLD_INGOT'
+      name: '&cBurglary'
+      lore:
+      -  ' '
+      -  '&bTime: &75m'
+    '1-5':
+      time: '5m'
+      material: 'MINECART'
+      name: '&cVehicle Theft'
+      lore:
+      -  ' '
+      -  '&bTime: &75m'
+    '1-6':
+      time: '1m'
+      material: 'SUGAR'
+      name: '&cPossession'
+      lore:
+      -  ' '
+      -  '&bTime: &71m'
+    '1-7':
+      time: '2m'
+      material: 'PAPER'
+      name: '&cMoney Laundering'
+      lore:
+      -  ' '
+      -  '&bTime: &72m'
+    '1-8':
+      time: '1h'
+      material: 'GHAST_TEAR'
+      name: '&cProfanity'
+      lore:
+      -  ' '
+      -  '&bTime: &71hr'
+      -  '&dWatch yo profanity'
+    confirm:
+      material: 'LIME_STAINED_GLASS_PANE:5'
+      name: '&2CONFIRM'
+      position: '2-8'
+    close:
+      material: 'RED_STAINED_GLASS_PANE:14'
+      name: '&2CLOSE'
+      position: '2-0'    
+    'fill':
+      material: 'GRAY_STAINED_GLASS_PANE:7'
+      name: ' '
