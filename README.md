@@ -1,1 +1,1 @@
-# CrewCo Plugin Template 1.20.x
+# Police Plugin for US(W)
