@@ -78,6 +78,11 @@ repositories {
 		name = "cars"
 		url = uri("https://repo.sbdevelopment.tech/releases")
 	}
+
+	maven {
+		name = "minecraft-libraries"
+		url = uri("https://libraries.minecraft.net/")
+	}
 }
 
 dependencies {
@@ -100,12 +105,15 @@ dependencies {
 	//MySQL
 	implementation("mysql:mysql-connector-java:8.0.28")
 
-/*
-	// Kotlin
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4")
-*/
+	//XSeries
+	implementation("com.github.cryptomorin:XSeries:13.3.1") // replace "version" with actual version, e.g., "8.8.0"
+
+	/*
+		// Kotlin
+		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22")
+		implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+		implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4")
+	*/
 	// Kotlin
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
@@ -116,8 +124,8 @@ dependencies {
 	implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
 
 	// Dependency Injection
-	implementation("com.google.inject:guice:5.1.0")
-	implementation("dev.misfitlabs.kotlinguice4:kotlin-guice:1.6.0")
+	implementation("com.google.inject:guice:7.0.0")
+	implementation("dev.misfitlabs.kotlinguice4:kotlin-guice:3.0.0")
 
 	// Database
 	implementation("com.github.jasync-sql:jasync-mysql:2.1.7")
@@ -184,5 +192,5 @@ bukkit {
 	authors = listOf("CrewCo Team", *project_owners.split(",").toTypedArray())
 	main = "$project_package.$project_plugin_class"
 	apiVersion = "1.21"
-	depend = mutableListOf("WorldGuard","vehiclesplus")
+	depend = mutableListOf("WorldGuard","VehiclesPlus")
 }

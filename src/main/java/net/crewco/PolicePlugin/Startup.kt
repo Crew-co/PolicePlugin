@@ -1,10 +1,10 @@
 package net.crewco.PolicePlugin
 
-
 import net.crewco.PolicePlugin.Util.Messages
 import net.crewco.PolicePlugin.Util.Util
 import net.crewco.PolicePlugin.commands.cuffCommand
 import net.crewco.PolicePlugin.commands.handCuffsCommand
+import net.crewco.PolicePlugin.commands.helpCommand
 import net.crewco.PolicePlugin.commands.jailCommand
 import net.crewco.PolicePlugin.commands.pardonCommand
 import net.crewco.PolicePlugin.commands.prisonCommand
@@ -17,14 +17,9 @@ import net.crewco.PolicePlugin.dojService.handCuffs.HandCuff
 import net.crewco.PolicePlugin.dojService.handCuffs.HandcuffListener
 import net.crewco.PolicePlugin.guis.SearchGui
 import net.crewco.PolicePlugin.guis.docguis.PrisionGui
-import net.crewco.PolicePlugin.guis.listener.Gui
 import net.crewco.common.CrewCoPlugin
-import net.jpountz.util.Utils
-import nl.sbdeveloper.vehiclesplus.api.VehiclesPlusAPI
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import java.util.*
-import kotlin.properties.Delegates
 
 class Startup : CrewCoPlugin() {
 	companion object{
@@ -49,17 +44,8 @@ class Startup : CrewCoPlugin() {
 
 		//System Inits
 		plugin = this
-		messagesManager = Messages(this)
-		utilsManager = Util()
 		sysMsg = ChatColor.translateAlternateColorCodes('&',"&7[&1Justice&7]> ")
 		load()
-
-		//Load DOC System
-		jailManager = Jail(this)
-
-		//Load  DOJ System
-		wantedListManager = WantedList(this)
-		handCuffManager = HandCuff(this)
 
 		//Config
 		plugin.reloadConfig()
@@ -73,7 +59,6 @@ class Startup : CrewCoPlugin() {
 		registerListeners(HandcuffListener::class)
 
 		// System Listeners
-		registerListeners(Gui::class)
 
 		//Doj Commands
 		registerCommands(handCuffsCommand::class,cuffCommand::class,unCuffCommand::class)
@@ -82,7 +67,7 @@ class Startup : CrewCoPlugin() {
 		registerCommands(pardonCommand::class,jailCommand::class)
 
 		//Global
-		registerCommands(wantedlistCommand::class,prisonCommand::class)
+		registerCommands(wantedlistCommand::class,prisonCommand::class,helpCommand::class)
 
 
 	}
@@ -93,18 +78,34 @@ class Startup : CrewCoPlugin() {
 
 
 fun load() {
-		jailManager.loadFile()
-		messagesManager.loadFile()
-		wantedListManager.loadFile()
-		prisionGui = PrisionGui(this)
-		searchGui = SearchGui(this)
-		maxtime = config.getInt("settings.logoff-time")
-		cufftimer = config.getInt("settings.cuff-timer")
-		whitelistManager = config.getStringList("settings.prison-whitelist")
+
+
+	// Load DOC System
+	jailManager = Jail(this)
+	jailManager.loadFile()
+
+	// Load  DOJ System
+	wantedListManager = WantedList(this)
+	handCuffManager = HandCuff(this)
+
+	// System
+	messagesManager = Messages(this)
+	utilsManager = Util()
+
+	messagesManager.loadFile()
+	wantedListManager.loadFile()
+
+	prisionGui = PrisionGui(this)
+	searchGui = SearchGui(this)
+
+	maxtime = config.getInt("settings.logoff-time")
+	cufftimer = config.getInt("settings.cuff-timer")
+
+	whitelistManager = config.getStringList("settings.prison-whitelist")
+
 	}
 
-	fun getPluing():Startup{
-		return this
+	fun getInstance(): Startup {
+		return plugin
 	}
-
 }

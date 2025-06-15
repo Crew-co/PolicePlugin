@@ -1,5 +1,6 @@
 package net.crewco.PolicePlugin.guis.docguis
 
+import com.cryptomorin.xseries.XMaterial
 import com.google.inject.Inject
 import com.sk89q.worldguard.protection.regions.ProtectedRegion
 import net.crewco.PolicePlugin.Startup
@@ -8,8 +9,6 @@ import net.crewco.PolicePlugin.Startup.Companion.jailManager
 import net.crewco.PolicePlugin.Startup.Companion.utilsManager
 import net.crewco.PolicePlugin.Startup.Companion.wantedListManager
 import net.crewco.PolicePlugin.Util.Pair
-import net.crewco.PolicePlugin.Util.XMaterial
-import net.crewco.PolicePlugin.guis.libs.NoobPage
 import net.crewco.PolicePlugin.guis.listener.Gui
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Material
@@ -35,11 +34,7 @@ class PrisionGui @Inject constructor(private val plugin:Startup){
 		for (s in conf.getConfigurationSection("gui.items")!!.getKeys(false)) {
 			val mat = conf.getString("gui.items.$s.material")
 			val item: ItemStack? = if (mat!!.contains(":")) {
-				XMaterial.fromStringWithData(
-					mat.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0],
-					mat.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].toByte()
-				)
-					.parseItem()
+				XMaterial.matchXMaterial(mat.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]).get().parseItem()
 			} else {
 				XMaterial.matchXMaterial(mat).get().parseItem()
 			}
@@ -93,76 +88,80 @@ class PrisionGui @Inject constructor(private val plugin:Startup){
 		lore.add(utilsManager.color("&7&lDate: &f" + (Date()).toString()))
 		lore.add(utilsManager.color("&7&lCharges:"))
 		val gui = Gui(plugin)
-		val page: NoobPage = gui.create(title!!, size)
+		val page: Gui.NoobPage = gui.create(title!!, size)
 		page.fill(fill)
 		for ((key, value) in inventory.entries) {
 			page.setItem(key.key, key.value, value)
 		}
 		page.onClick { e ->
-			e!!.isCancelled = true
-			if (e.currentItem != null) {
-				if (e.currentItem!!.hasItemMeta() && e.currentItem!!.itemMeta
-						.persistentDataContainer
-						.has(NamespacedKey.minecraft("time"), PersistentDataType.STRING)
-				) {
-					val value =
-						e.currentItem!!.itemMeta.persistentDataContainer[NamespacedKey.minecraft("time"), PersistentDataType.STRING] as String
-					val p = e.whoClicked as Player
-					val stringTime = value.substring(0, value.length - 1).toInt()
-					val time = if (value.contains("s"))
-						stringTime
-					else
-						(if (value.contains("m"))
-							(stringTime * 60)
+			if (e != null) {
+				e.isCancelled = true
+			}
+			if (e != null) {
+				if (e.currentItem != null) {
+					if (e.currentItem!!.hasItemMeta() && e.currentItem!!.itemMeta
+							.persistentDataContainer
+							.has(NamespacedKey.minecraft("time"), PersistentDataType.STRING)
+					) {
+						val value =
+							e.currentItem!!.itemMeta.persistentDataContainer[NamespacedKey.minecraft("time"), PersistentDataType.STRING] as String
+						val p = e.whoClicked as Player
+						val stringTime = value.substring(0, value.length - 1).toInt()
+						val time = if (value.contains("s"))
+							stringTime
 						else
-							(if (value.contains("h")) (stringTime * 3600) else stringTime))
-					p.playSound(p.location, Sound.UI_BUTTON_CLICK, 0.5f, 1.0f)
-					if (!e.currentItem!!.itemMeta.hasEnchant(Enchantment.MENDING)) {
-						e.currentItem!!.addUnsafeEnchantment(Enchantment.MENDING, 1)
-						total[0] = total[0] + time
-						lore.add(
-							"&b- &c" + ChatColor.stripColor(
-								e.currentItem!!.itemMeta.displayName
-							)
-						)
-					} else {
-						e.currentItem!!.removeEnchantment(Enchantment.MENDING)
-						total[0] = total[0] - time
-						lore.remove(
-							"&b- &c" + ChatColor.stripColor(
-								e.currentItem!!.itemMeta.displayName
-							)
-						)
-					}
-				} else if (e.currentItem!!.hasItemMeta() && e.currentItem!!.itemMeta
-						.persistentDataContainer.has(NamespacedKey.minecraft("confirm"), PersistentDataType.STRING)
-					&& total[0] > 0
-				) {
-					if (wantedListManager.getPlayers().containsKey(target.uniqueId)) wantedListManager.removePlayer(
-						selector,
-						target.uniqueId
-					)
-					jailManager.imprisonPlayer(target, prison!!, total[0])
-					handCuffManager.getCuffed().remove(target)
-					lore.add(
-						utilsManager.color(
-							"&7&lTime: &f"
-									+ (if (total[0] / 60 != 0)
-								((total[0] / 60).toString() + "m" + (total[0] % 60) + "s")
+							(if (value.contains("m"))
+								(stringTime * 60)
 							else
-								((total[0] % 60).toString() + "s"))
+								(if (value.contains("h")) (stringTime * 3600) else stringTime))
+						p.playSound(p.location, Sound.UI_BUTTON_CLICK, 0.5f, 1.0f)
+						if (!e.currentItem!!.itemMeta.hasEnchant(Enchantment.MENDING)) {
+							e.currentItem!!.addUnsafeEnchantment(Enchantment.MENDING, 1)
+							total[0] = total[0] + time
+							lore.add(
+								"&b- &c" + ChatColor.stripColor(
+									e.currentItem!!.itemMeta.displayName
+								)
+							)
+						} else {
+							e.currentItem!!.removeEnchantment(Enchantment.MENDING)
+							total[0] = total[0] - time
+							lore.remove(
+								"&b- &c" + ChatColor.stripColor(
+									e.currentItem!!.itemMeta.displayName
+								)
+							)
+						}
+					} else if (e.currentItem!!.hasItemMeta() && e.currentItem!!.itemMeta
+							.persistentDataContainer.has(NamespacedKey.minecraft("confirm"), PersistentDataType.STRING)
+						&& total[0] > 0
+					) {
+						if (wantedListManager.getPlayers().containsKey(target.uniqueId)) wantedListManager.removePlayer(
+							selector,
+							target.uniqueId
 						)
-					)
-					val slip: ItemStack =
-						utilsManager.getItem(ItemStack(Material.PAPER), "&bJail File", lore)
-					target.inventory.addItem(slip)
-					selector.inventory.addItem(slip)
-					gui.close((e.whoClicked as Player))
+						jailManager.imprisonPlayer(target, prison!!, total[0])
+						handCuffManager.getCuffed().remove(target)
+						lore.add(
+							utilsManager.color(
+								"&7&lTime: &f"
+										+ (if (total[0] / 60 != 0)
+									((total[0] / 60).toString() + "m" + (total[0] % 60) + "s")
+								else
+									((total[0] % 60).toString() + "s"))
+							)
+						)
+						val slip: ItemStack =
+							utilsManager.getItem(ItemStack(Material.PAPER), "&bJail File", lore)
+						target.inventory.addItem(slip)
+						selector.inventory.addItem(slip)
+						gui.close((e.whoClicked as Player))
+					}
+					if (e.currentItem!!.hasItemMeta() && e.currentItem!!.itemMeta
+							.persistentDataContainer
+							.has(NamespacedKey.minecraft("close"), PersistentDataType.STRING)
+					) gui.close((e.whoClicked as Player))
 				}
-				if (e.currentItem!!.hasItemMeta() && e.currentItem!!.itemMeta
-						.persistentDataContainer
-						.has(NamespacedKey.minecraft("close"), PersistentDataType.STRING)
-				) gui.close((e.whoClicked as Player))
 			}
 		}
 		return gui

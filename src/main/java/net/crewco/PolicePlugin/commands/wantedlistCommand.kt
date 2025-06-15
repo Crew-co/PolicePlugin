@@ -21,12 +21,15 @@ class wantedlistCommand @Inject constructor(private val plugin:Startup) {
 	fun onExec(player:Player,@Argument("args") args:Array<String>){
 		when (args[0]){
 			"view" -> {
-				if (player.hasPermission("prison.wl.help")){
-					WantedGui(plugin).view(player)
+				if (player.hasPermission("prison.wl.help")) {
+					WantedGui(plugin).view(player).show(player,0)
+					player.sendMessage("DEBUG")
 				}
+
 			}
 
 			"add" -> {
+				if (args[1] == player.name){player.sendMessage("${sysMsg}You Can not add your self to the WantedList"); return}
 				if (player.hasPermission("prison.wl.add")) {
 					if (args.size > 3 + plugin.config.getInt("settings.word-limit") || Arrays
 							.stream(utilsManager.subArray(args, 3, args.size - 1))
@@ -44,7 +47,7 @@ class wantedlistCommand @Inject constructor(private val plugin:Startup) {
 						return
 					}
 					if (wantedListManager.getPlayers().containsKey(Bukkit.getPlayer(args[1])!!.uniqueId)) {
-						player.sendMessage(messagesManager.messages.get("player-wanted")!!)
+						player.sendMessage(messagesManager.messages["player-wanted"]!!)
 						return
 					}
 					wantedListManager.addPlayer(

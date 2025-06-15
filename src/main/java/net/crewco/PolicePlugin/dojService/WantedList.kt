@@ -29,12 +29,12 @@ class WantedList @Inject constructor(private val plugin:Startup){
 
 	fun addPlayer(uuid: UUID, who: UUID, priority: Int, reason: String?) {
 		players[uuid] = WantedPlayer(uuid, who, priority, reason!!)
-		config!!["players.$uuid.priority"] = priority
-		config!!["players.$uuid.who"] = who.toString()
-		config!!["players.$uuid.reason"] = reason
-		if (config!!.isSet("broadcast") && config!!.getBoolean("broadcast")) Bukkit.broadcastMessage(
+		config["players.$uuid.priority"] = priority
+		config["players.$uuid.who"] = who.toString()
+		config["players.$uuid.reason"] = reason
+		if (config!!.isSet("broadcast") && config.getBoolean("broadcast")) Bukkit.broadcastMessage(
 			utilsManager.replaceAll(
-				messagesManager.messages.get("wanted-added")!!,
+				messagesManager.messages["wanted-added"]!!,
 				Pair.of("%player%", Bukkit.getOfflinePlayer(uuid).name!!),
 				Pair.of("%who%", Bukkit.getOfflinePlayer(who).name!!), Pair.of("%priority%", "" + priority),
 				Pair.of("%reason%", reason)
@@ -44,7 +44,7 @@ class WantedList @Inject constructor(private val plugin:Startup){
 			.forEach { o: Player? ->
 				o?.sendMessage(
 					utilsManager.replaceAll(
-						messagesManager.messages.get("wanted-added")!!,
+						messagesManager.messages["wanted-added"]!!,
 						Pair.of("%player%", Bukkit.getOfflinePlayer(uuid).name!!),
 						Pair.of("%who%", Bukkit.getOfflinePlayer(who).name!!),
 						Pair.of("%priority%", "" + priority), Pair.of("%reason%", reason)

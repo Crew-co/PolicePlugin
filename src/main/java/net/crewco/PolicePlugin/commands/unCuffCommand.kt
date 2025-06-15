@@ -2,6 +2,7 @@ package net.crewco.PolicePlugin.commands
 
 import net.crewco.PolicePlugin.Startup.Companion.handCuffManager
 import net.crewco.PolicePlugin.Startup.Companion.messagesManager
+import net.crewco.PolicePlugin.Startup.Companion.sysMsg
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.incendo.cloud.annotations.Argument
@@ -15,13 +16,14 @@ class unCuffCommand {
 	@Command("uncuff <target>")
 	@Permission("prison.uncuff")
 	fun onUnCuff(player:Player, @Argument("target") target: Player){
+		if (target == player) {player.sendMessage("${sysMsg}You Can not Uncuff your self");return}
 		handCuffManager.uncuffPlayer(target)
 		target.sendMessage(
-			(messagesManager.messages.get("cuffing-release-success") as String)
+			(messagesManager.messages["cuffing-release-success"] as String)
 				.replace("%player%".toRegex(), player.name)
 		)
 		player.sendMessage(
-			(messagesManager.messages.get("cuffer-release-success") as String).replace(
+			(messagesManager.messages["cuffer-release-success"] as String).replace(
 				"%player%".toRegex(),
 				target.name
 			)
