@@ -124,7 +124,7 @@ class HandcuffListener @Inject constructor(private val plugin:Startup): Listener
 		} else if (handCuffManager.getCuffed().containsValue(e.player)) {
 			handCuffManager.uncuffPlayer(handCuffManager.getCuffed(e.player)!!)
 		} else if (wantedListManager.getPlayers().containsKey(e.player.uniqueId)) {
-			if (wantedListManager.getcfg()!!.isSet("logout-timer") && wantedListManager.getcfg()!!.isSet("logout-active") && wantedListManager.getcfg()!!.getBoolean("logout-active")){
+			if (wantedListManager.getcfg().isSet("logout-timer") && wantedListManager.getcfg()!!.isSet("logout-active") && wantedListManager.getcfg()!!.getBoolean("logout-active")){
 				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
 					if (e.player.isOnline) return@Runnable
 					wantedListManager.removePlayer(e.player.uniqueId)

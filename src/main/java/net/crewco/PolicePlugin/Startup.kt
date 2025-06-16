@@ -17,6 +17,7 @@ import net.crewco.PolicePlugin.dojService.handCuffs.HandCuff
 import net.crewco.PolicePlugin.dojService.handCuffs.HandcuffListener
 import net.crewco.PolicePlugin.guis.SearchGui
 import net.crewco.PolicePlugin.guis.docguis.PrisionGui
+import net.crewco.PolicePlugin.vehiclesIntegration.listeners.clickListener
 import net.crewco.common.CrewCoPlugin
 import org.bukkit.ChatColor
 import java.util.*
@@ -68,6 +69,9 @@ class Startup : CrewCoPlugin() {
 
 		//Global
 		registerCommands(wantedlistCommand::class,prisonCommand::class,helpCommand::class)
+
+		// Vehicles
+		registerListeners(clickListener::class)
 
 
 	}

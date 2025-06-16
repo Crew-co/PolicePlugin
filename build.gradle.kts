@@ -75,7 +75,7 @@ repositories {
 	}
 
 	maven {
-		name = "cars"
+		name = "sbdevelopmentRepoReleases"
 		url = uri("https://repo.sbdevelopment.tech/releases")
 	}
 
@@ -97,7 +97,7 @@ dependencies {
 	compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
 
 	// Vehicles Plus
-	implementation("nl.sbdeveloper:VehiclesPlus-API:3.0.6")
+	compileOnly("nl.sbdeveloper:VehiclesPlus-API:3.0.6")
 
 	//LuckPerms
 	compileOnly("net.luckperms:api:5.4")
